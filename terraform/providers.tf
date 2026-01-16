@@ -17,6 +17,7 @@ provider "minikube" {}
 resource "minikube_cluster" "project_hub_cluster" {
     cluster_name = var.client
     nodes = var.nodes
+    addons = var.addons
 }
 
 

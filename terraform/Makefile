@@ -7,6 +7,7 @@ plan:
 	terraform plan -var-file=lhub.tfvars -out lhub.plan
 
 setup:
+	minikube start
 	terraform init
 
 cleanup:
