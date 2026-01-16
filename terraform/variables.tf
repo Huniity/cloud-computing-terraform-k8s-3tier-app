@@ -182,6 +182,13 @@ variable "backend_django_settings_module" {
     nullable = false
 }
 
+variable "django_secret_key" {
+    description = "Django secret key for backend service"
+    type = string
+    sensitive = true
+    nullable = false
+}
+
 
 # Frontend configuration variables
 

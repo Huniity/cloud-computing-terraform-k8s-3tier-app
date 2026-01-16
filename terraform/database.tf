@@ -84,7 +84,7 @@ resource "kubernetes_stateful_set_v1" "database" {
 
         resources {
           requests = {
-            storage = "10Gi"
+            storage = "1Gi"
           }
         }
       }

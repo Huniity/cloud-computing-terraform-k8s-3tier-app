@@ -19,7 +19,7 @@ backend_image_path = "../app/backend"
 backend_image = "backend"
 frontend_image = "frontend"
 frontend_image_path = "../app/frontend"
-image_pull_policy = "Never"
+image_pull_policy = "IfNotPresent"
 image_tag = ":latest"
 
 # Database configuration
@@ -35,6 +35,7 @@ backend_port = 8000
 backend_replicas = 3
 backend_django_debug = "False"
 backend_django_settings_module = "learning_hub.settings"
+django_secret_key = "django-insecure-_g!xn78w26aj^pw*$$2&^&fl_3wbtspd+3eay%2*3mgb4^u$jg"
 
 # Frontend configuration
 frontend_port = 80
