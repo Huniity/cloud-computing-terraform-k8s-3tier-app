@@ -39,8 +39,22 @@ resource "null_resource" "main_images" {
             docker build -t ${var.database_image}${var.image_tag} ${var.database_image_path}
             docker build -t ${var.backend_image}${var.image_tag} ${var.backend_image_path}
             docker build -t ${var.frontend_image}${var.image_tag} ${var.frontend_image_path}
-            eval $(minikube docker-env)
             docker images | grep "${var.database_image}\|${var.backend_image}\|${var.frontend_image}"
         EOT
   }
 }
+
+
+# provisioner "local-exec" {
+#     command = <<EOT
+#         docker build -t ${var.database_image}${var.image_tag} ${var.database_image_path}
+#         docker build -t ${var.backend_image}${var.image_tag} ${var.backend_image_path}
+#         docker build -t ${var.frontend_image}${var.image_tag} ${var.frontend_image_path}
+        
+#         minikube -p learning-hub image load ${var.database_image}${var.image_tag} || true
+#         minikube -p learning-hub image load ${var.backend_image}${var.image_tag} || true
+#         minikube -p learning-hub image load ${var.frontend_image}${var.image_tag} || true
+        
+#         docker images | grep "${var.database_image}\|${var.backend_image}\|${var.frontend_image}" || true
+#         EOT
+#   }

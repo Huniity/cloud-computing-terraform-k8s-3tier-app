@@ -19,7 +19,7 @@ backend_image_path = "../app/backend"
 backend_image = "backend"
 frontend_image = "frontend"
 frontend_image_path = "../app/frontend"
-image_pull_policy = "IfNotPresent"
+image_pull_policy = "Never"
 image_tag = ":latest"
 
 # Database configuration

@@ -12,25 +12,23 @@ terraform {
 }
 
 
-provider "minikube" {
-}
-provider "kubernetes" {
-    host = minikube_cluster.project-hub-cluster.host
+provider "minikube" {}
 
-    client_certificate     = minikube_cluster.project-hub-cluster.client_certificate
-    client_key             = minikube_cluster.project-hub-cluster.client_key
-    cluster_ca_certificate = minikube_cluster.project-hub-cluster.cluster_ca_certificate
-}
-
-
-
-resource "minikube_cluster" "project-hub-cluster" {
+resource "minikube_cluster" "project_hub_cluster" {
     cluster_name = var.client
     nodes = var.nodes
 }
 
 
-resource "kubernetes_namespace_v1" "project-hub-cluster" {
+provider "kubernetes" {
+    host = minikube_cluster.project_hub_cluster.host
+    client_certificate     = minikube_cluster.project_hub_cluster.client_certificate
+    client_key             = minikube_cluster.project_hub_cluster.client_key
+    cluster_ca_certificate = minikube_cluster.project_hub_cluster.cluster_ca_certificate
+}
+
+
+resource "kubernetes_namespace_v1" "project_hub" {
     metadata {
         name = "${var.namespace_prefix}-${var.client}"
     }

@@ -102,14 +102,12 @@ variable "image_tag" {
     description = "Tag for Docker images"
     type = string
     default = ":latest"
-    nullable = false
 }
 
 variable "image_pull_policy" {
     description = "Image pull policy for Kubernetes deployments"
     type = string
-    default = "IfNotPresent"
-    nullable = false
+    default = "Never"
 }
 
 # Database configuration variables
