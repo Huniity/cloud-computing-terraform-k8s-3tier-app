@@ -59,7 +59,7 @@ variable "addons" {
 variable "database_image" {
     description = "Docker image for database service"
     type = string
-    default = "database:latest"
+    default = "database"
     nullable = false
 }
 
@@ -73,7 +73,7 @@ variable "database_image_path" {
 variable "backend_image" {
     description = "Docker image for backend service"
     type = string
-    default = "backend:latest"
+    default = "backend"
     nullable = false
 }
 
@@ -87,7 +87,7 @@ variable "backend_image_path" {
 variable "frontend_image" {
     description = "Docker image for frontend service"
     type = string
-    default = "frontend:latest"
+    default = "frontend"
     nullable = false
 }
 
@@ -107,7 +107,6 @@ variable "image_tag" {
 variable "image_pull_policy" {
     description = "Image pull policy for Kubernetes deployments"
     type = string
-    default = "Never"
 }
 
 # Database configuration variables

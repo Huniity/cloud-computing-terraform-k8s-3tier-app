@@ -8,11 +8,10 @@ resource "kubernetes_service_v1" "database" {
   }
 
   spec {
-    cluster_ip = "None"
-
     selector = {
       app = "database"
     }
+    cluster_ip = "None"
 
     port {
       name        = "postgres"

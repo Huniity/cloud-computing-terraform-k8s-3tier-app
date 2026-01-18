@@ -8,11 +8,10 @@ resource "kubernetes_service_v1" "backend" {
   }
 
   spec {
-    cluster_ip = "None"
-
     selector = {
       app = "backend"
     }
+    type = "ClusterIP"
 
     port {
       name        = "backend"

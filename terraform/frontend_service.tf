@@ -8,16 +8,16 @@ resource "kubernetes_service_v1" "frontend" {
   }
 
   spec {
-    cluster_ip = "None"
-
     selector = {
       app = "frontend"
     }
+    type = "NodePort"
 
     port {
       name        = "frontend"
       port        = var.frontend_port
       target_port = var.frontend_port
+      node_port = 30080
     }
   }
 }
