@@ -174,14 +174,14 @@ cython_debug/
 # Django collected static files (generated during build)
 /backend/static/
 
-#Terraform files
-# *.tfstate
-# *.tfstate.backup
-# .terraform/
-# crash.log
-# override.tf
-# override.tf.json
-# *_override.tf
-# *_override.tf.json
-# .terraform.lock.hcl
-# *.plan
+Terraform files
+*.tfstate
+*.tfstate.backup
+.terraform/
+crash.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraform.lock.hcl
+*.plan
