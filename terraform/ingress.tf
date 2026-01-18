@@ -7,57 +7,16 @@ resource "kubernetes_ingress_v1" "ingress" {
   spec {
     ingress_class_name = "nginx"
     
-    tls {
-      hosts = ["project-hub"]
-      secret_name = "project-hub-tls"
-    }
-
-    rule {
-      host = "project-hub"
-      http {
-        path {
-          path      = "/api"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "backend"
-              port {
-                number = 8000
-              }
-            }
-          }
-        }
-
-        path {
-          path      = "/admin"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "backend"
-              port {
-                number = 8000
-              }
-            }
-          }
-        }
-
-        path {
-          path      = "/"
-          path_type = "Prefix"
-          backend {
-            service {
-              name = "frontend"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
+    dynamic "tls" {
+      for_each = var.enable_https ? [1] : []
+      content {
+        hosts = [var.certificate_domain]
+        secret_name = "learning-hub-tls"
       }
     }
 
     rule {
-      host = "localhost"
+      host = var.certificate_domain
       http {
         path {
           path      = "/api"
@@ -100,4 +59,6 @@ resource "kubernetes_ingress_v1" "ingress" {
       }
     }
   }
+
+  depends_on = [kubernetes_secret_v1.tls]
 }

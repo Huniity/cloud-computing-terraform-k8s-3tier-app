@@ -40,3 +40,7 @@ django_secret_key = "django-insecure-_g!xn78w26aj^pw*$$2&^&fl_3wbtspd+3eay%2*3mg
 # Frontend configuration
 frontend_port = 80
 frontend_replicas = 3
+
+# HTTPS configuration
+certificate_domain = "localhost"
+enable_https = true

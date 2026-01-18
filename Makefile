@@ -1,14 +1,15 @@
-.PHONY: help setup apply test port-forward clean reset
+.PHONY: help setup apply test port-forward stop-port-forward clean reset
 
 help:
 	@echo "Learning Hub - Makefile targets:"
 	@echo ""
-	@echo "  setup          Setup Minikube cluster"
-	@echo "  apply          Deploy application with Terraform"
-	@echo "  test           Test deployment and load fixtures"
-	@echo "  port-forward   Setup port-forwards for local access"
-	@echo "  clean          Delete cluster and clean state"
-	@echo "  reset          Clean and start fresh"
+	@echo "  setup              Setup Minikube cluster"
+	@echo "  apply              Deploy application with Terraform"
+	@echo "  test               Test deployment and load fixtures"
+	@echo "  port-forward       Start port-forwards"
+	@echo "  stop-port-forward  Stop port-forwards"
+	@echo "  clean              Delete cluster and clean state"
+	@echo "  reset              Clean and start fresh"
 	@echo ""
 	@echo "Usage:"
 	@echo "  make setup && make apply && make test"
@@ -24,12 +25,10 @@ test:
 	bash scripts/test.sh
 
 port-forward:
-	@echo "Setting up port-forwards..."
-	@kubectl port-forward -n lhub-learning-hub svc/frontend 30080:80 --address=0.0.0.0 &
-	@kubectl port-forward -n lhub-learning-hub svc/backend 30008:8000 --address=0.0.0.0 &
-	@echo "✅ Port-forwards active:"
-	@echo "  Frontend: http://localhost:30080"
-	@echo "  Backend:  http://localhost:30008"
+	bash scripts/port-forward.sh start
+
+stop-port-forward:
+	bash scripts/port-forward.sh stop
 
 clean:
 	bash scripts/cleanup.sh

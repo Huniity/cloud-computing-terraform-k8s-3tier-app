@@ -40,11 +40,18 @@ output "database_service" {
 
 output "access_urls" {
   description = "Application access URLs"
-  value = {
-    frontend   = "http://localhost:30080"
-    backend_api = "http://localhost:30008/api/"
-    admin      = "http://localhost:30080/admin/"
-  }
+  value = merge(
+    {
+      frontend   = "http://localhost:30080"
+      backend_api = "http://localhost:30008/api/"
+      admin      = "http://localhost:30080/admin/"
+    },
+    var.enable_https ? {
+      frontend_https   = "https://localhost:8443"
+      backend_api_https = "https://localhost:8443/api/"
+      admin_https      = "https://localhost:8443/admin/"
+    } : {}
+  )
 }
 
 output "database_connection" {
@@ -83,6 +90,9 @@ output "test_commands" {
     test_frontend  = "curl http://localhost:30080"
     test_api       = "curl http://localhost:30008/api/courses/"
     test_admin     = "curl http://localhost:30080/admin/"
+    test_https_frontend = var.enable_https ? "curl -k https://${var.certificate_domain}" : null
+    test_https_api      = var.enable_https ? "curl -k https://${var.certificate_domain}/api/courses/" : null
+    test_https_admin    = var.enable_https ? "curl -k https://${var.certificate_domain}/admin/" : null
     port_forward   = "make port-forward"
   }
 }

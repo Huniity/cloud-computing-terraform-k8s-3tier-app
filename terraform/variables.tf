@@ -48,6 +48,18 @@ variable "env" {
     default = "default-environment"
 }
 
+variable "certificate_domain" {
+    description = "Domain name for self-signed certificate"
+    type = string
+    default = "localhost"
+}
+
+variable "enable_https" {
+    description = "Enable HTTPS with self-signed certificate"
+    type = bool
+    default = true
+}
+
 variable "addons" {
     description = "List of Minikube addons to enable"
     type = list(string)
