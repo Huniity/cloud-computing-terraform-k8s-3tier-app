@@ -1,8 +1,9 @@
-.PHONY: help setup apply test port-forward stop-port-forward clean reset
+.PHONY: help setup apply test port-forward stop-port-forward clean reset start
 
 help:
 	@echo "Learning Hub - Makefile targets:"
 	@echo ""
+	@echo "  start              Initialize everything (setup → apply → port-forward → test)"
 	@echo "  setup              Setup Minikube cluster"
 	@echo "  apply              Deploy application with Terraform"
 	@echo "  test               Test deployment and load fixtures"
@@ -12,6 +13,7 @@ help:
 	@echo "  reset              Clean and start fresh"
 	@echo ""
 	@echo "Usage:"
+	@echo "  make start         (initialize everything)"
 	@echo "  make setup && make apply && make test"
 	@echo ""
 
@@ -30,7 +32,9 @@ port-forward:
 stop-port-forward:
 	bash scripts/port-forward.sh stop
 
-clean:
-	bash scripts/cleanup.sh
+destroy:
+	bash scripts/destroy.sh
 
-reset: clean setup apply test
+reset: destroy setup apply port-forward test
+
+start: setup apply port-forward test

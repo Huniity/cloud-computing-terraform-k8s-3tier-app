@@ -1,4 +1,7 @@
 resource "kubernetes_deployment_v1" "backend" {
+  depends_on = [
+  kubernetes_job_v1.backend_bootstrap
+]
   metadata {
     name      = "backend"
     namespace = kubernetes_namespace_v1.project_hub.metadata[0].name

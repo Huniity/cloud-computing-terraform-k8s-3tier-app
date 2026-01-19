@@ -36,10 +36,11 @@ show_outputs() {
     echo ""
 }
 
-start_port_forwards() {
-    echo "Starting port-forwards in background..."
-    bash "$SCRIPT_DIR/port-forward.sh" start &
-    echo "Next: run make test"
+wait_for_deployment() {
+    echo "Waiting for pods to be ready..."
+    kubectl wait --for=condition=ready pod -l app=backend -n lhub-learning-hub --timeout=300s 2>/dev/null || true
+    kubectl wait --for=condition=ready pod -l app=frontend -n lhub-learning-hub --timeout=300s 2>/dev/null || true
+    echo "OK"
 }
 
 main() {
@@ -53,7 +54,7 @@ main() {
     echo ""
     show_outputs
     echo ""
-    start_port_forwards
+    wait_for_deployment
 }
 
 main

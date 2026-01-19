@@ -1,3 +1,4 @@
+#!/bin/bash
 
 set -e
 
@@ -16,7 +17,6 @@ start_cluster() {
 
 enable_addons() {
     echo "Enabling addons..."
-    minikube addons enable metrics-server -p "$CLUSTER_NAME"
     minikube addons enable ingress -p "$CLUSTER_NAME"
     minikube addons enable storage-provisioner -p "$CLUSTER_NAME"
     echo "OK"

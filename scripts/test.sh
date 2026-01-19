@@ -1,3 +1,4 @@
+#!/bin/bash
 
 set -e
 
@@ -18,37 +19,26 @@ check_services() {
 test_connectivity() {
     echo "Testing connectivity..."
     
-    local minikube_ip
-    minikube_ip=$(minikube ip -p lhub-learning-hub 2>/dev/null || echo "127.0.0.1")
+    echo ""
+    echo "  Frontend HTTP:  http://localhost:30080"
+    curl -s -o /dev/null -w "    Status: %{http_code}\n" http://localhost:30080
     
-    local frontend_port
-    frontend_port=$(kubectl get svc -n "$NAMESPACE" frontend -o jsonpath='{.spec.ports[0].nodePort}')
+    echo "  Frontend HTTPS: https://localhost:8443"
+    curl -sk -o /dev/null -w "    Status: %{http_code}\n" https://localhost:8443
     
-    local backend_port
-    backend_port=$(kubectl get svc -n "$NAMESPACE" backend -o jsonpath='{.spec.ports[0].nodePort}' 2>/dev/null || echo "")
+    echo "  Backend HTTP:   http://localhost:30008/api/courses/"
+    curl -s -o /dev/null -w "    Status: %{http_code}\n" http://localhost:30008/api/courses/
     
-    echo "  Frontend: http://$minikube_ip:$frontend_port"
-    [ -n "$backend_port" ] && echo "  Backend:  http://$minikube_ip:$backend_port/api/courses/"
-    echo "OK"
-}
-
-load_fixtures() {
-    echo "Loading fixtures..."
+    echo "  Backend HTTPS:  https://localhost:8443/api/courses/"
+    curl -sk -o /dev/null -w "    Status: %{http_code}\n" https://localhost:8443/api/courses/
     
-    local backend_pod
-    backend_pod=$(kubectl get pods -n "$NAMESPACE" -l app=backend -o jsonpath='{.items[0].metadata.name}')
+    echo "  Admin HTTP:     http://localhost:30080/admin/"
+    curl -s -o /dev/null -w "    Status: %{http_code}\n" http://localhost:30080/admin/
     
-    if [ -z "$backend_pod" ]; then
-        echo "  Skipped (backend pod not ready)"
-        return
-    fi
+    echo "  Admin HTTPS:    https://localhost:8443/admin/"
+    curl -sk -o /dev/null -w "    Status: %{http_code}\n" https://localhost:8443/admin/
     
-    kubectl exec -n "$NAMESPACE" "$backend_pod" -- \
-        poetry run python manage.py loaddata \
-        /app/fixtures/group.json \
-        /app/fixtures/user.json \
-        /app/fixtures/course.json 2>/dev/null || true
-    
+    echo ""
     echo "OK"
 }
 
@@ -73,8 +63,6 @@ main() {
     check_services
     echo ""
     test_connectivity
-    echo ""
-    load_fixtures
     echo ""
     print_summary
 }

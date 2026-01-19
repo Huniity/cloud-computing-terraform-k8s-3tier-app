@@ -122,7 +122,7 @@ terraform apply -var-file=lhub.tfvars
 Deploy everything in one command:
 
 ```bash
-make reset
+make start       # setup → apply → port-forward → test
 ```
 
 Or step-by-step:
@@ -130,7 +130,14 @@ Or step-by-step:
 ```bash
 make setup       # bash scripts/setup.sh
 make apply       # bash scripts/apply.sh
+make port-forward # bash scripts/port-forward.sh start
 make test        # bash scripts/test.sh
+```
+
+Or reset everything from scratch:
+
+```bash
+make reset       # destroy → setup → apply → test
 ```
 
 ## Usage
@@ -174,17 +181,19 @@ make test  # bash scripts/test.sh
 - Shows access URLs
 - Loads database fixtures (groups, users, courses)
 
-### Port Forwarding
-Enable local access to services:
+## Makefile Targets
 
-```bash
-make port-forward  # kubectl port-forward commands
-```
-
-**What it provides:**
-- Frontend: http://localhost:30080
-- Backend API: http://localhost:30008
-- Database: postgresql://localhost:30432
+| Target | Command | Description |
+|--------|---------|-------------|
+| `make start` | `setup → apply → port-forward → test` | **Initialize everything in one command** |
+| `make setup` | `bash scripts/setup.sh` | Initialize Minikube cluster |
+| `make apply` | `bash scripts/apply.sh` | Deploy infrastructure with Terraform |
+| `make port-forward` | `bash scripts/port-forward.sh start` | Start port-forwards for local access |
+| `make stop-port-forward` | `bash scripts/port-forward.sh stop` | Stop port-forwards |
+| `make test` | `bash scripts/test.sh` | Test deployment and load fixtures |
+| `make destroy` | `bash scripts/destroy.sh` | Delete all resources |
+| `make reset` | `destroy → setup → apply → test` | Clean and start fresh |
+| `make help` | Show help | Display all available targets |
 
 ## Access the Application
 
@@ -227,7 +236,8 @@ Available after running `make test`:
 │   ├── setup.sh             # Initialize Minikube
 │   ├── apply.sh             # Deploy with Terraform
 │   ├── test.sh              # Test deployment
-│   └── cleanup.sh           # Delete all resources
+│   ├── port-forward.sh      # Manage port-forwards
+│   └── destroy.sh           # Delete all resources
 ├── terraform/
 │   ├── main.tf              # Main configuration
 │   ├── variables.tf         # Input variables
@@ -308,7 +318,7 @@ test_commands = {
 Remove all resources:
 
 ```bash
-make clean  # bash scripts/cleanup.sh
+make destroy  # bash scripts/destroy.sh
 ```
 
 **What it removes:**
@@ -464,14 +474,6 @@ frontend_replicas = 3
 2. **Check terraform/** - Infrastructure code
 3. **View app/scripts/** - Kubernetes manifests
 4. **Run make help** - See all available targets
-
-
-## Support & Next Steps
-
-1. **Review app/README.md** - Backend/Frontend documentation
-2. **Check terraform/** - Infrastructure code
-3. **View app/scripts/** - Kubernetes manifests
-4. **Read Makefile** - See all available targets
 
 ## License
 

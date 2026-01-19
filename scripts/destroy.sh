@@ -46,12 +46,12 @@ clean_docker() {
 
 print_summary() {
     echo ""
-    echo "✅ Cleanup complete!"
-    echo "Fresh start ready: run make setup"
+    echo "✅ Destroy complete!"
+    echo "Fresh start ready: run make start"
 }
 
 main() {
-    echo "=== Cleanup All ==="
+    echo "=== Destroy All ==="
     echo ""
     kill_port_forwards
     echo ""
